@@ -10,13 +10,35 @@
 /* Complete this function for Task 1. Including fixing this comment.
 */
 FreqRecord *get_word(char *word, Node *head, char **file_names) {
-	Node* cur = head;
+    Node* cur = head;
+    found = 0;
+    if(cur != NULL){
+        if(strcmp(cur->word, word) == 0){
+            found = 1;
+            break;
+        }
+        cur = cur->next;
+    }
 
-	// if file not found
-	if(file == NULL){
-		perror("file not found");
-       		exit(1);
-	}
+    int i = 0;
+    while(file_names[i] != NULL){
+        i++;
+    }
+    i--;
+    if(!found){
+        i = 0;
+    }
+
+    //store the last one
+    FreqRecord* record = malloc(sizeof(FreqRecord)*(i+1));
+    FreqRecord tail;
+    tail.freq = 0;
+    tail.filename = '\0';
+    record[i] = tail;
+
+    for(int j = 0; j<i;j++){
+
+    }
     return NULL;
 }
 
