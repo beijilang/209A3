@@ -6,7 +6,7 @@
 #include <ctype.h>
 
 #include "freq_list.h"
-#include "indexer.h"
+#include "worker.h"
 
 char *remove_punc(char *);
 
