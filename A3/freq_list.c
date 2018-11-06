@@ -118,9 +118,10 @@ void display_list(Node *head, char **filenames) {
 void write_list(char *namefile, char *listfile, Node *head, char **filenames) {
     Node *cur = head;
     int i;
-    printf("WRITE TO LIST\n");
+
     /* Write out the linked list */
     FILE *list_fp;
+    fprintf("testing: %s\n",listfile);
     if ((list_fp = fopen(listfile, "w")) == NULL) {
         perror("fopen for list file");
         exit(1);
