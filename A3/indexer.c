@@ -60,9 +60,9 @@ Node *index_file(Node *head, char *fname, char **filenames) {
     return head;
 }
 
-/* Create and write an index for the files in the supplied directory. 
- * An index consists of the filenames file and the associated index file. 
- * Strip punctuation, convert words to lowercase and ignore words 
+/* Create and write an index for the files in the supplied directory.
+ * An index consists of the filenames file and the associated index file.
+ * Strip punctuation, convert words to lowercase and ignore words
  * that are shorter than 4 characters.
  */
 int main(int argc, char **argv) {
@@ -73,6 +73,7 @@ int main(int argc, char **argv) {
     char *namefile = "filenames";
     char dirname[PATHLENGTH] = ".";
     char path[PATHLENGTH];
+    strncpy(dirname, "simpletest/d1", PATHLENGTH);
 
     while ((ch = getopt(argc, argv, "i:n:d:")) != -1) {
         switch (ch) {

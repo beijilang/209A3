@@ -19,7 +19,7 @@ FreqRecord *get_word(char *word, Node *head, char **file_names) {
         }
         cur = cur->next;
     }
-
+    printf("TESTING");
     int i = 0;
     while(file_names[i] != NULL){
         i++;
