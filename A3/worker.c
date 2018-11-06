@@ -19,7 +19,6 @@ FreqRecord *get_word(char *word, Node *head, char **file_names) {
         }
         cur = cur->next;
     }
-    printf("TESTING");
     int i = 0;
     while(file_names[i] != NULL){
         i++;
@@ -41,6 +40,7 @@ FreqRecord *get_word(char *word, Node *head, char **file_names) {
         temp.freq = cur->freq[j];
         strcpy(temp.filename, file_names[j]);
         record[j] = temp;
+        printf("name:%s\n",file_names[j]);
     }
     return record;
 }
@@ -50,7 +50,6 @@ FreqRecord *get_word(char *word, Node *head, char **file_names) {
 */
 void print_freq_records(FreqRecord *frp) {
     int i = 0;
-    printf("START print_freq_records");
     while (frp != NULL && frp[i].freq != 0) {
         printf("%d    %s\n", frp[i].freq, frp[i].filename);
         i++;
