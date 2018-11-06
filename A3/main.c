@@ -14,8 +14,7 @@ void print_freq_records(FreqRecord *frp) {
 		}
 	}
 
-int main(){
-    (int argc, char **argv) {
+int main(int argc, char **argv) {
     Node *head = NULL;
     char **filenames = init_filenames();
     char ch;
