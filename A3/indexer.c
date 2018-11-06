@@ -73,7 +73,6 @@ int main(int argc, char **argv) {
     char *namefile = "filenames";
     char dirname[PATHLENGTH] = ".";
     char path[PATHLENGTH];
-    strncpy(dirname, "simpletest/d1", PATHLENGTH);
 
     while ((ch = getopt(argc, argv, "i:n:d:")) != -1) {
         switch (ch) {
