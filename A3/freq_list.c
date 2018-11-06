@@ -121,7 +121,7 @@ void write_list(char *namefile, char *listfile, Node *head, char **filenames) {
 
     /* Write out the linked list */
     FILE *list_fp;
-    fprintf("testing: %s\n",listfile);
+    printf("testing: %s\n",listfile);
     if ((list_fp = fopen(listfile, "w")) == NULL) {
         perror("fopen for list file");
         exit(1);
