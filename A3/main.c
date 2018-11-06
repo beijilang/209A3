@@ -7,13 +7,6 @@
 
 #include "freq_list.h"
 #include "worker.h"
-void print_freq_records(FreqRecord *frp) {
-		int i = 0;
-		while(frp != NULL && frp[i].freq != 0) {
-			printf("%d    %s\n", frp[i].freq, frp[i].filename);
-			i++;
-		}
-	}
 
 int main(int argc, char **argv) {
     Node *head = NULL;
