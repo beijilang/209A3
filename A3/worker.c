@@ -50,7 +50,7 @@ FreqRecord *get_word(char *word, Node *head, char **file_names) {
 */
 void print_freq_records(FreqRecord *frp) {
     int i = 0;
-
+    printf("START print_freq_records");
     while (frp != NULL && frp[i].freq != 0) {
         printf("%d    %s\n", frp[i].freq, frp[i].filename);
         i++;
