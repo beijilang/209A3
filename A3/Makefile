@@ -5,10 +5,10 @@ SRC = freq_list.c punc.c
 HDR = freq_list.h worker.h
 OBJ = freq_list.o punc.o
 
-all : indexer queryone printindex main
+all : indexer queryone printindex testing
 
-main: main.o freq_list.o worker.o
-	gcc ${FLAGS} -o $@ main.o freq_list.o worker.o
+testing: testing.o freq_list.o worker.o
+	gcc ${FLAGS} -o $@ testing.o freq_list.o worker.o
 
 indexer : indexer.o ${OBJ}
 	gcc ${FLAGS} -o $@ indexer.o ${OBJ}
