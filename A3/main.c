@@ -3,9 +3,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <ctype.h>
 
 #include "freq_list.h"
-#include "worker.h"
+#include "indexer.h"
+
+char *remove_punc(char *);
+
 /* Returns a pointer to a linked list of nodes where each node
 * contains a word and the count of the number of occurrences of the word.
 */
@@ -56,7 +60,6 @@ Node *index_file(Node *head, char *fname, char **filenames) {
     }
     return head;
 }
-
 void print_freq_records(FreqRecord *frp) {
 		int i = 0;
 		while(frp != NULL && frp[i].freq != 0) {
