@@ -6,6 +6,7 @@
 
 #include "freq_list.h"
 #include "worker.h"
+#include "indexer.h"
 void print_freq_records(FreqRecord *frp) {
 		int i = 0;
 		while(frp != NULL && frp[i].freq != 0) {
@@ -68,8 +69,9 @@ int main(int argc, char **argv) {
         perror("closedir");
 
     write_list(namefile, indexfile, head, filenames);
-    read_list(listfile, namefile, &head, filenames);
-    FreqRecord* record = get_word("Banada",head,listfile);
+    char **read_filenames = init_filenames();
+    read_list(listfile, namefile, &head, read_filenames);
+    FreqRecord* record = get_word("Banada",head,read_filenames);
     print_freq_records(record);
     return 0;
 }
