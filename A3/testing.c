@@ -15,24 +15,10 @@ int main(int argc, char **argv) {
     char *listfile = "index";
     char *namefile = "filenames";
 
-    /* an example of using getop to process command-line flags and arguments */
-    while ((arg = getopt(argc,argv,"i:n:")) > 0) {
-        switch(arg) {
-        case 'i':
-            listfile = optarg;
-            break;
-        case 'n':
-            namefile = optarg;
-            break;
-        default:
-            fprintf(stderr, "Usage: printindex [-i FILE] [-n FILE]\n");
-            exit(1);
-        }
-    }
 
     read_list(listfile, namefile, &head, filenames);
     display_list(head, filenames);
-    FreqRecord* record = get_word("Banada",head,filenames);
+    FreqRecord* record = get_word(argv[1],head,filenames);
     print_freq_records(record);
 
     return 0;
