@@ -11,7 +11,7 @@
 */
 FreqRecord *get_word(char *word, Node *head, char **file_names) {
     Node* cur = head;
-    found = 0;
+    int found = 0;
     if(cur != NULL){
         if(strcmp(cur->word, word) == 0){
             found = 1;
@@ -33,13 +33,16 @@ FreqRecord *get_word(char *word, Node *head, char **file_names) {
     FreqRecord* record = malloc(sizeof(FreqRecord)*(i+1));
     FreqRecord tail;
     tail.freq = 0;
-    tail.filename = '\0';
+    strcpy(tail.filename, '\0');
     record[i] = tail;
 
     for(int j = 0; j<i;j++){
-
+        FreqRecord temp;
+        temp.freq = cur.freq[j];
+        strcpy(temp.filename, file_names[j]);
+        record[j] = temp;
     }
-    return NULL;
+    return record;
 }
 
 /* Print to standard output the frequency records for a word.

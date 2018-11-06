@@ -1,6 +1,6 @@
 /* The functions operate on a linked list of words.  Each element of the
 * list contains a word, and an array that stores the frequency of the
-* word for each file in a particular list of files.  The name of each file 
+* word for each file in a particular list of files.  The name of each file
 * in that list is stored in an array of file names.  The array in a
 * linked list node is a parallel array to the array of file names.
 */
@@ -90,7 +90,7 @@ Node *add_word(Node *head, char **filenames, char *word, char *fname) {
     }
 }
 
-/* Print the list to standard output in a readable format. 
+/* Print the list to standard output in a readable format.
 * (Primarily useful for debugging purposes.)
 */
 void display_list(Node *head, char **filenames) {
@@ -118,7 +118,7 @@ void display_list(Node *head, char **filenames) {
 void write_list(char *namefile, char *listfile, Node *head, char **filenames) {
     Node *cur = head;
     int i;
-
+    printf("WRITE TO LIST\n");
     /* Write out the linked list */
     FILE *list_fp;
     if ((list_fp = fopen(listfile, "w")) == NULL) {
@@ -161,7 +161,7 @@ void write_list(char *namefile, char *listfile, Node *head, char **filenames) {
 * correct size, but that head does not point to a list node when it is
 * passed in.
 */
-void read_list(char *listfile, char *namefile, 
+void read_list(char *listfile, char *namefile,
                     Node **head, char **filenames) {
 
     /* Read in the linked list */
@@ -241,7 +241,7 @@ void read_list(char *listfile, char *namefile,
     }
 }
 
-/* Create an array to hold filenames and initialize it to all NULL 
+/* Create an array to hold filenames and initialize it to all NULL
 */
 char **init_filenames() {
     int i;
