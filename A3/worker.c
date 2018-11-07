@@ -76,8 +76,8 @@ void run_worker(char *dirname, int in, int out) {
     fprintf(stderr,"START");
     while((read(in,received,READSIZE))>0){
         FreqRecord* record = get_word(received,head,filenames);
+        fprintf(stderr,"RUNNING");
         while (1){
-            fprintf(stderr,"RUNNING");
             if(record[i].freq == 0 && strcmp(record[i].filename,"")==0){
                 if(write(out,&record[i],sizeof(FreqRecord))==-1){
                     perror("write to pipe");
