@@ -7,6 +7,7 @@
 #include "freq_list.h"
 #include "worker.h"
 
+#define READSIZE 128
 /* return an array of FreqRecord that contains the occurrence of word in each file
 the last index of FreqRecord would have 0 as freq and '\0' as filename
 */
@@ -34,8 +35,8 @@ FreqRecord *get_word(char *word, Node *head, char **file_names) {
     tail.freq = 0;
     tail.filename[0]='\0';
     record[i] = tail;
-
-    for(int j = 0; j<i;j++){
+    int j;
+    for(j = 0; j<i;j++){
         FreqRecord temp;
         temp.freq = cur->freq[j];
         strcpy(temp.filename, file_names[j]);
@@ -63,20 +64,29 @@ void run_worker(char *dirname, int in, int out) {
     Node *head = NULL;
     char **filenames = init_filenames();
     char listfile[128];
-    char *namefile[128];
-    strncat(listfile,dirname,"/index");
-    strncat(namefile,dirname,"/filenames");
+    char namefile[READSIZE];
+    strcpy(listfile,dirname);
+    strcpy(namefile,dirname);
+    strncat(listfile,"/index",READSIZE);
+    strncat(namefile,"/filenames",READSIZE);
     read_list(listfile, namefile, &head, filenames);
 
     int i = 0;
-    char received[128];
-    while(read(fd[in],char received,128)!=0){
+    char received[READSIZE];
+
+    while((read(in,received,READSIZE))>0){
         FreqRecord* record = get_word(received,head,filenames);
-        while true{
-            write(fd[out],record[i],128);
+        while (1){
             if(record[i].freq == 0 && strcmp(record[i].filename,"")==0){
+                if(write(out,&record[i],sizeof(FreqRecord))==-1){
+                    perror("write to pipe");
+                };
                 break;
             }
+            if(write(out,&record[i],sizeof(FreqRecord))==-1){
+                perror("write to pipe");
+            };
+
         }
     }
 
