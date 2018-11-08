@@ -76,18 +76,7 @@ void run_worker(char *dirname, int in, int out) {
     while((read(in,received,READSIZE))>0){
         FreqRecord* record = get_word(received,head,filenames);
         print_freq_records(record);
-        while (1){
-            if(record[i].freq == 0 && strcmp(record[i].filename,"")==0){
-                if(write(out,record[i].filename,sizeof(FreqRecord))==-1){
-                    perror("write to pipe");
-                };
-                break;
-            }
-            if(write(out,record[i].filename,sizeof(FreqRecord))==-1){
-                perror("write to pipe");
-            };
 
-        }
     }
 
 
