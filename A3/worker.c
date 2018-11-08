@@ -78,7 +78,7 @@ void run_worker(char *dirname, int in, int out) {
     while((read(in,received,READSIZE))>0){
         printf("word:%s\n",received);
         char* co;
-        strcpy(co,received;)
+        strcpy(co,received);
         printf("compare:%d\n",strcmp("three",co));
         FreqRecord* record = get_word(co,head,filenames);
         print_freq_records(record);
