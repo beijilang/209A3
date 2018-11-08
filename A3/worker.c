@@ -67,8 +67,8 @@ void run_worker(char *dirname, int in, int out) {
     char namefile[READSIZE];
     strcpy(listfile,dirname);
     strcpy(namefile,dirname);
-    strncat(listfile,"/index",READSIZE);
-    strncat(namefile,"/filenames",READSIZE);
+    strncat(listfile,"index",READSIZE);
+    strncat(namefile,"filenames",READSIZE);
     read_list(listfile, namefile, &head, filenames);
 
     int i = 0;
