@@ -80,12 +80,12 @@ void run_worker(char *dirname, int in, int out) {
         print_freq_records(record);
        while (1){
             if(record[i].freq == 0 && strcmp(record[i].filename,"")==0){
-                if(write(out,&record[i],sizeof(&FreqRecord))==-1){
+                if(write(out,&record[i],sizeof(*FreqRecord))==-1){
                     perror("write to pipe");
                 };
                 break;
             }
-            if(write(out,&record[i],sizeof(&FreqRecord))==-1){
+            if(write(out,&record[i],sizeof(*FreqRecord))==-1){
                 perror("write to pipe");
             };
             i++;
