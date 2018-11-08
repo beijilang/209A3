@@ -14,6 +14,7 @@ int main(int argc, char **argv) {
     char arg;
     char *listfile = "index";
     char *namefile = "filenames";
+    char *search;
 
     while ((arg = getopt(argc,argv,"i:n:")) > 0) {
         switch(arg) {
@@ -22,6 +23,9 @@ int main(int argc, char **argv) {
             break;
         case 'n':
             namefile = optarg;
+            break;
+        case 'd':
+            search = optarg;
             break;
         default:
             fprintf(stderr, "Usage: printindex [-i FILE] [-n FILE]\n");
