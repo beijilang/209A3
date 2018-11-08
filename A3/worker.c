@@ -73,11 +73,10 @@ void run_worker(char *dirname, int in, int out) {
 
     int i = 0;
     char received[READSIZE];
-    fprintf(stderr,"START");
     display_list(head, filenames);
     while((read(in,received,READSIZE))>0){
         FreqRecord* record = get_word(received,head,filenames);
-        fprintf(stderr,"RUNNING");
+        print_freq_records(record);
         while (1){
             if(record[i].freq == 0 && strcmp(record[i].filename,"")==0){
                 if(write(out,record[i].filename,sizeof(FreqRecord))==-1){
