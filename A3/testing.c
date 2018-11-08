@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
 
     read_list(listfile, namefile, &head, filenames);
     display_list(head, filenames);
-    FreqRecord* record = get_word(argv[1],head,filenames);
+    FreqRecord* record = get_word(search,head,filenames);
     print_freq_records(record);
 
     return 0;
