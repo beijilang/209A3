@@ -28,7 +28,7 @@ FreqRecord *get_word(char *word, Node *head, char **file_names) {
     if(!found){
         i = 0;
     }
-
+    printf("found: %d", found);
     //store the last one
     FreqRecord* record = malloc(sizeof(FreqRecord)*(i+1));
     FreqRecord tail;
