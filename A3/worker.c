@@ -15,7 +15,6 @@ FreqRecord *get_word(char *word, Node *head, char **file_names) {
     Node* cur = head;
     int found = 0;
     while(cur != NULL){
-        fprintf(stderr,"found current: %s  %s\n", cur->word,word);
         if(strcmp(cur->word, word) == 0){
             found = 1;
             fprintf(stderr,"FOUNDWORD");
@@ -30,7 +29,6 @@ FreqRecord *get_word(char *word, Node *head, char **file_names) {
     if(!found){
         i = 0;
     }
-    fprintf(stderr,"found: %d\n", found);
     //store the last one
     FreqRecord* record = malloc(sizeof(FreqRecord)*(i+1));
     FreqRecord tail;
@@ -77,11 +75,10 @@ void run_worker(char *dirname, int in, int out) {
     display_list(head, filenames);
     int count;
     while((count = read(in,received,READSIZE))>0){
-        printf("word:%s\n",received);
         received[count - 1] = '\0';
         FreqRecord* record = get_word(received,head,filenames);
         print_freq_records(record);
-       /* while (1){
+       while (1){
             if(record[i].freq == 0 && strcmp(record[i].filename,"")==0){
                 if(write(out,record[i].filename,sizeof(FreqRecord))==-1){
                     perror("write to pipe");
@@ -92,7 +89,7 @@ void run_worker(char *dirname, int in, int out) {
                 perror("write to pipe");
             };
 
-        }*/
+        }
     }
 
 
