@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
     char *namefile = "filenames";
     char *search;
 
-    while ((arg = getopt(argc,argv,"i:n:")) > 0) {
+    while ((arg = getopt(argc,argv,"i:n:d:")) > 0) {
         switch(arg) {
         case 'i':
             listfile = optarg;
