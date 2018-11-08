@@ -85,7 +85,7 @@ void run_worker(char *dirname, int in, int out) {
                 };
                 break;
             }
-            if(write(out,record[i].filename,sizeof(FreqRecord))==-1){
+            if(write(out,record[i].filename,strlen(record[i].filename))==-1){
                 perror("write to pipe");
             };
             i++;
