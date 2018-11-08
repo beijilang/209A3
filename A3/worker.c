@@ -15,7 +15,7 @@ FreqRecord *get_word(char *word, Node *head, char **file_names) {
     Node* cur = head;
     int found = 0;
     while(cur != NULL){
-        fprintf(stderr,"found current: %s\n", cur->word);
+        fprintf(stderr,"found current: %s  %s\n", cur->word,word);
         if(strcmp(cur->word, word) == 0){
             found = 1;
             fprintf(stderr,"FOUNDWORD");
