@@ -15,6 +15,20 @@ int main(int argc, char **argv) {
     char *listfile = "index";
     char *namefile = "filenames";
 
+    while ((arg = getopt(argc,argv,"i:n:")) > 0) {
+        switch(arg) {
+        case 'i':
+            listfile = optarg;
+            break;
+        case 'n':
+            namefile = optarg;
+            break;
+        default:
+            fprintf(stderr, "Usage: printindex [-i FILE] [-n FILE]\n");
+            exit(1);
+        }
+    }
+
 
     read_list(listfile, namefile, &head, filenames);
     display_list(head, filenames);
