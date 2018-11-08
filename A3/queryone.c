@@ -69,6 +69,7 @@ int main(int argc, char **argv) {
 
         // Only call run_worker if it is a directory
         // Otherwise ignore it.
+        printf("path: %s\n",path);
         if (S_ISDIR(sbuf.st_mode)) {
             run_worker(path, STDIN_FILENO, STDOUT_FILENO);
         }
