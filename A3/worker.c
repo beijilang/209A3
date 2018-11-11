@@ -7,7 +7,6 @@
 #include "freq_list.h"
 #include "worker.h"
 
-#define READSIZE 128
 /* return an array of FreqRecord that contains the occurrence of word in each file
 the last index of FreqRecord would have 0 as freq and '\0' as filename
 */
@@ -29,19 +28,30 @@ FreqRecord *get_word(char *word, Node *head, char **file_names) {
     if(!found){
         i = 0;
     }
+
+    //total of non-zero freq file
+    int total = 0;
+    int j;
+    for(j = 0; j<i;j++){
+        if((cur->freq)[j] != 0){
+            total++;
+        }
+    }
     //store the last one
-    FreqRecord* record = malloc(sizeof(FreqRecord)*(i+1));
+    FreqRecord* record = malloc(sizeof(FreqRecord)*(total+1));
     FreqRecord tail;
     tail.freq = 0;
     tail.filename[0]='\0';
     record[i] = tail;
-    int j;
+    int index = 0;
     for(j = 0; j<i;j++){
         FreqRecord temp;
-        temp.freq = cur->freq[j];
-        strcpy(temp.filename, file_names[j]);
-        record[j] = temp;
-        fprintf(stderr,"name:%s\n",file_names[j]);
+        if(cur->freq[j] != 0){
+            temp.freq = cur->freq[j];
+            strcpy(temp.filename, file_names[j]);
+            record[index] = temp;
+            index++;
+        }
     }
     return record;
 }
@@ -60,6 +70,7 @@ void print_freq_records(FreqRecord *frp) {
 /* Complete this function for Task 2 including writing a better comment.
 */
 void run_worker(char *dirname, int in, int out) {
+    //TODO get rid of 0 freq
     Node *head = NULL;
     char **filenames = init_filenames();
     char listfile[128];
@@ -71,21 +82,21 @@ void run_worker(char *dirname, int in, int out) {
     read_list(listfile, namefile, &head, filenames);
 
     int i = 0;
-    char received[READSIZE];
-    display_list(head, filenames);
+    char received[MAXWORD];
+    //display_list(head, filenames);
     int count;
-    while((count = read(in,received,READSIZE))>0){
+    while((count = read(in,received,MAXWORD))>0){
         received[count - 1] = '\0';
         FreqRecord* record = get_word(received,head,filenames);
-        print_freq_records(record);
+        //print_freq_records(record);
        while (1){
             if(record[i].freq == 0 && strcmp(record[i].filename,"")==0){
-                if(write(out,&record[i],sizeof(*FreqRecord))==-1){
+                if(write(out,&record[i],sizeof(FreqRecord*))==-1){
                     perror("write to pipe");
                 };
                 break;
             }
-            if(write(out,&record[i],sizeof(*FreqRecord))==-1){
+            if(write(out,&record[i],sizeof(FreqRecord*))==-1){
                 perror("write to pipe");
             };
             i++;

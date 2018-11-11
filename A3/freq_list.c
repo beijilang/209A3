@@ -166,7 +166,6 @@ void read_list(char *listfile, char *namefile,
 
     /* Read in the linked list */
     FILE *list_fp;
-    printf("%s %s\n",listfile,namefile);
     if ((list_fp = fopen(listfile, "r")) == NULL) {
         perror("fopen for list_fp");
         exit(1);
