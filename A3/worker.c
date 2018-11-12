@@ -70,7 +70,6 @@ FreqRecord *get_word(char *word, Node *head, char **file_names) {
     FreqRecord tail;
     tail.freq = 0;
     tail.filename[0]='\0';
-    record[i] = tail;
     int index = 0;
     for(j = 0; j<i;j++){
         FreqRecord temp;
@@ -81,6 +80,7 @@ FreqRecord *get_word(char *word, Node *head, char **file_names) {
             index++;
         }
     }
+    record[index] = tail;
     return record;
 }
 
@@ -95,7 +95,9 @@ void print_freq_records(FreqRecord *frp) {
     }
 }
 
-/* Complete this function for Task 2 including writing a better comment.
+/* take dirname, input in, output out.
+load index file and namefiles from dirname and take a word from in
+return the freq of the word in each file, output to out
 */
 void run_worker(char *dirname, int in, int out) {
     //TODO get rid of 0 freq

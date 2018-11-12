@@ -108,6 +108,8 @@ int main(int argc, char **argv) {
                 FreqRecord* record;
                 while (read(fdfreq[i][0],record,sizeof(FreqRecord*)) > 0) {
                     printf("%s  %d\n", record->filename, record->freq);
+                    sort_freq_records(records, *record);
+                    print_freq_records(records);
                 }
 
                 //close the reading end of freq since we are done
