@@ -6,6 +6,13 @@
 
 #include "freq_list.h"
 #include "worker.h"
+/*
+sort freq_records in decreasing order according their freq
+with max size of MAXRECORDS. if there are not enough space,
+store the biggest MAXRECORDS records
+*/
+void sort_freq_records(FreqRecord *frp, FreqRecord record){
+}
 
 /* return an array of FreqRecord that contains the occurrence of word in each file
 the last index of FreqRecord would have 0 as freq and '\0' as filename
@@ -73,12 +80,12 @@ void run_worker(char *dirname, int in, int out) {
     //TODO get rid of 0 freq
     Node *head = NULL;
     char **filenames = init_filenames();
-    char listfile[128];
-    char namefile[READSIZE];
+    char listfile[MAXWORD];
+    char namefile[MAXWORD];
     strcpy(listfile,dirname);
     strcpy(namefile,dirname);
-    strncat(listfile,"/index",READSIZE);
-    strncat(namefile,"/filenames",READSIZE);
+    strncat(listfile,"/index",MAXWORD);
+    strncat(namefile,"/filenames",MAXWORD);
     read_list(listfile, namefile, &head, filenames);
 
     int i = 0;
