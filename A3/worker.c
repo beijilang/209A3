@@ -12,6 +12,27 @@ with max size of MAXRECORDS. if there are not enough space,
 store the biggest MAXRECORDS records
 */
 void sort_freq_records(FreqRecord *frp, FreqRecord record){
+    int empty_spot = 0;
+    for(int i = 0; i < MAXRECORDS, i++){
+        if(frp[i] == NULL){
+            frp[i] = record;
+            empty_spot = 1;
+            break;
+        }
+    }
+    int smaller_freq = 0;
+    if(!empty_spot){
+        for(int i = 0; i < MAXRECORDS, i++){
+            if(frp[i].freq < record.freq){
+                smaller_freq = i;
+                break;
+            }
+        }
+        for(int i = MAXRECORDS; i > smaller_freq; i--){
+            frp[i] = frp[i-1];
+        }
+        frp[smaller_freq] = record;
+    }
 }
 
 /* return an array of FreqRecord that contains the occurrence of word in each file

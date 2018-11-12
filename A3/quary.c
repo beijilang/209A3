@@ -49,6 +49,9 @@ int main(int argc, char **argv) {
 
     //create the sort records of size MAXRECORDS
     FreqRecord records[MAXRECORDS];
+    for(int i = 0; i < MAXRECORDS; i++){
+        records[i]= NULL;
+    }
     int fdword[MAXWORKERS][2], fdfreq[MAXWORKERS][2];
 
     while ((dp = readdir(dirp)) != NULL) {
