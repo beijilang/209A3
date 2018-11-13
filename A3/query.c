@@ -48,12 +48,7 @@ int main(int argc, char **argv) {
     struct dirent *dp;
 
     //create the sort records of size MAXRECORDS
-    FreqRecord records[MAXRECORDS];
-    for(int i = 0; i < MAXRECORDS; i++){
-	FreqRecord temp;
-	temp.freq = 0;
-        records[i]= temp;
-    }
+
     int fdword[MAXWORKERS][2], fdfreq[MAXWORKERS][2];
 	int pipenum;
 	int r = 0;
@@ -81,8 +76,8 @@ int main(int argc, char **argv) {
 
         // Only call run_worker if it is a directory
         // Otherwise ignore it.
-        
-      
+
+
         if (S_ISDIR(sbuf.st_mode)) {
             pipe(fdword[i]);
             pipe(fdfreq[i]);
@@ -141,7 +136,13 @@ int main(int argc, char **argv) {
     // do all the work
     while(1){
         if(r > 0){
-            FreqRecord* record;
+            FreqRecord records[MAXRECORDS];
+            for(int i = 0; i < MAXRECORDS; i++){
+                FreqRecord temp;
+                temp.freq = 0;
+                records[i]= temp;
+            }
+            FreqRecord record;
             char message[MAXWORD];
 
             fgets(message, MAXWORD, stdin);
@@ -154,19 +155,12 @@ int main(int argc, char **argv) {
 			}
 			for(int j = 0; j < i; j++){
 				fprintf(stderr,"%d\n", j);
-		        while (read(fdfreq[j][0],record,sizeof(FreqRecord*)) > 0) {
+		        while (read(fdfreq[j][0],record,sizeof(FreqRecord)) > 0) {
 		            fprintf(stderr,"read something\n");
-		            sort_freq_records(records, *record);
-		            print_freq_records(records);
+		            sort_freq_records(records, record);
             	}
 			}
-            
-
-            //close the reading end of freq since we are done
-            if(close(fdfreq[pipenum][0])== -1){
-                perror("close");
-                exit(1);
-            }
+			print_freq_records(records);
         }
         else{
             run_worker(path,fdword[pipenum][0],fdfreq[pipenum][1]);

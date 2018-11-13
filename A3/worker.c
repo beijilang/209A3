@@ -13,8 +13,8 @@ store the biggest MAXRECORDS records
 */
 void sort_freq_records(FreqRecord *frp, FreqRecord record){
     int empty_spot = 0;
-    for(int i = 0; i < MAXRECORDS, i++){
-        if(frp[i] == NULL){
+    for(int i = 0; i < MAXRECORDS; i++){
+        if(frp[i].freq == 0){
             frp[i] = record;
             empty_spot = 1;
             break;
@@ -22,7 +22,7 @@ void sort_freq_records(FreqRecord *frp, FreqRecord record){
     }
     int smaller_freq = 0;
     if(!empty_spot){
-        for(int i = 0; i < MAXRECORDS, i++){
+        for(int i = 0; i < MAXRECORDS; i++){
             if(frp[i].freq < record.freq){
                 smaller_freq = i;
                 break;
@@ -44,7 +44,6 @@ FreqRecord *get_word(char *word, Node *head, char **file_names) {
     while(cur != NULL){
         if(strcmp(cur->word, word) == 0){
             found = 1;
-            fprintf(stderr,"FOUNDWORD");
             break;
         }
         cur = cur->next;
@@ -100,7 +99,6 @@ load index file and namefiles from dirname and take a word from in
 return the freq of the word in each file, output to out
 */
 void run_worker(char *dirname, int in, int out) {
-    //TODO get rid of 0 freq
     Node *head = NULL;
     char **filenames = init_filenames();
     char listfile[MAXWORD];
@@ -115,20 +113,22 @@ void run_worker(char *dirname, int in, int out) {
     char received[MAXWORD];
     //display_list(head, filenames);
     int count;
-    while((count = read(in,received,MAXWORD))>0){
-        received[count - 1] = '\0';
+	
+    while((count = read(in,received,sizeof(char)*MAXWORD))>0){
+        received[strlen(received)-1] = '\0';
         FreqRecord* record = get_word(received,head,filenames);
         //print_freq_records(record);
        while (1){
+			fprintf(stderr,"wirte something to output %s \n",record[i].filename);
             if(record[i].freq == 0 && strcmp(record[i].filename,"")==0){
                 if(write(out,&record[i],sizeof(FreqRecord*))==-1){
                     perror("write to pipe");
-                };
+                }
                 break;
             }
             if(write(out,&record[i],sizeof(FreqRecord*))==-1){
                 perror("write to pipe");
-            };
+            }
             i++;
 
         }
@@ -138,3 +138,4 @@ void run_worker(char *dirname, int in, int out) {
 
     return;
 }
+
