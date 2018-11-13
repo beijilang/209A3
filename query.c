@@ -55,7 +55,9 @@ int main(int argc, char **argv) {
         records[i]= temp;
     }
     int fdword[MAXWORKERS][2], fdfreq[MAXWORKERS][2];
-
+	int pipenum;
+	int r = 0;
+	int i = 0;
     while ((dp = readdir(dirp)) != NULL) {
         if (strcmp(dp->d_name, ".") == 0 ||
             strcmp(dp->d_name, "..") == 0 ||
@@ -79,12 +81,12 @@ int main(int argc, char **argv) {
 
         // Only call run_worker if it is a directory
         // Otherwise ignore it.
-        int i = 0;
-        int r;
+        
+      
         if (S_ISDIR(sbuf.st_mode)) {
-            printf("path is %s\n",path);
             pipe(fdword[i]);
             pipe(fdfreq[i]);
+			pipenum = i;
             //parent
             if((r = fork())>0){
 
@@ -99,12 +101,13 @@ int main(int argc, char **argv) {
                     exit(1);
                 }
                 // close all the reading end of previous pipe
+				/*fprintf(stderr,"%d",i);
                 for(int j = 0; j < i; j++){
                     if(close(fdword[j][0])== -1){
-                    perror("close reading end of previous child");
-                    exit(1);
+		                perror("close reading end of previous child");
+		                exit(1);
                     }
-                }
+                }*/
 
             }else if(r == 0){
                 //child
@@ -125,6 +128,7 @@ int main(int argc, char **argv) {
                     exit(1);
                     }
                 }
+				break;
             }
             else{
                 perror("fork");
@@ -141,23 +145,31 @@ int main(int argc, char **argv) {
             char message[MAXWORD];
 
             fgets(message, MAXWORD, stdin);
-            if(write(fdword[i][1],message,sizeof(MAXWORD))==-1){
-                perror("write to pipe");
-            };
-            while (read(fdfreq[i][0],record,sizeof(FreqRecord*)) > 0) {
-                fprintf(stderr,"read something\n");
-                sort_freq_records(records, *record);
-                print_freq_records(records);
-            }
+
+			//write the word i times, so all children can read
+			for(int j = 0; j < i; j++){
+		        if(write(fdword[j][1],message,sizeof(char)*MAXWORD)==-1){
+		            perror("write to pipe");
+		        }
+			}
+			for(int j = 0; j < i; j++){
+				fprintf(stderr,"%d\n", j);
+		        while (read(fdfreq[j][0],record,sizeof(FreqRecord*)) > 0) {
+		            fprintf(stderr,"read something\n");
+		            sort_freq_records(records, *record);
+		            print_freq_records(records);
+            	}
+			}
+            
 
             //close the reading end of freq since we are done
-            if(close(fdfreq[i][0])== -1){
+            if(close(fdfreq[pipenum][0])== -1){
                 perror("close");
                 exit(1);
             }
         }
         else{
-            run_worker(path,fdword[i][0],fdfreq[i][1]);
+            run_worker(path,fdword[pipenum][0],fdfreq[pipenum][1]);
         }
     }
 
@@ -166,5 +178,6 @@ int main(int argc, char **argv) {
 
     return 0;
 }
+
 
 
