@@ -106,29 +106,6 @@ int main(int argc, char **argv) {
                     }
                 }
 
-                //read one FreqRecord
-                FreqRecord* record;
-				char message[MAXWORD];
-				while(1){
-					fgets(message, MAXWORD, stdin);
-					if(write(fdword[i][1],message,sizeof(MAXWORD))==-1){
-                    	perror("write to pipe");
-                	};
-		            while (read(fdfreq[i][0],record,sizeof(FreqRecord*)) > 0) {
-						fprintf(stderr,"read something\n");
-		                sort_freq_records(records, *record);
-		                print_freq_records(records);
-		            }
-				}
-
-                //close the reading end of freq since we are done
-                if(close(fdfreq[i][0])== -1){
-                    perror("close");
-                    exit(1);
-                }
-
-
-
             }else if(r == 0){
                 //child
                 //close the writing end of word
@@ -148,13 +125,39 @@ int main(int argc, char **argv) {
                     exit(1);
                     }
                 }
-                run_worker(path,fdword[i][0],fdfreq[i][1]);
             }
             else{
                 perror("fork");
                 exit(1);
             }
             i++;
+        }
+    }
+
+    // do all the work
+    while(1){
+        if(r > 0){
+            FreqRecord* record;
+            char message[MAXWORD];
+
+            fgets(message, MAXWORD, stdin);
+            if(write(fdword[i][1],message,sizeof(MAXWORD))==-1){
+                perror("write to pipe");
+            };
+            while (read(fdfreq[i][0],record,sizeof(FreqRecord*)) > 0) {
+                fprintf(stderr,"read something\n");
+                sort_freq_records(records, *record);
+                print_freq_records(records);
+            }
+
+            //close the reading end of freq since we are done
+            if(close(fdfreq[i][0])== -1){
+                perror("close");
+                exit(1);
+            }
+        }
+        else{
+            run_worker(path,fdword[i][0],fdfreq[i][1]);
         }
     }
 
